@@ -2,11 +2,19 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=qca-debug-uio
-LOCAL_SRC:=$(TOPDIR)/qca/src/qca-debug-uio
 PKG_RELEASE:=1
 PKG_VERSION:=1
 
-include $(INCLUDE_DIR)/local-development.mk
+PKG_LICENSE:=ISC
+
+ifeq (y, $(filter y, $(CONFIG_TARGET_echo_cpe) $(CONFIG_TARGET_sdx85_cpe-v1) $(CONFIG_TARGET_sdx85_cpe)))
+LOCAL_SRC:=$(TOPDIR)/src/ipq/qca-debug-uio
+-include $(TOPDIR)/owrt-qti-ipq-open/include/local-development.mk
+else
+LOCAL_SRC:=$(TOPDIR)/qca/src/qca-debug-uio
+-include $(INCLUDE_DIR)/local-development.mk
+endif
+
 include $(INCLUDE_DIR)/package.mk
 
 define KernelPackage/$(PKG_NAME)
