@@ -23,6 +23,7 @@ define KernelPackage/$(PKG_NAME)
   SUBMENU:=Network Support
   TITLE:=UIO debug driver
   DEPENDS:=
+  KCONFIG:=CONFIG_UIO=y
   FILES:=$(PKG_BUILD_DIR)/debug_uio.ko
   AUTOLOAD:=$(call AutoLoad,08,debug_uio)
 endef
