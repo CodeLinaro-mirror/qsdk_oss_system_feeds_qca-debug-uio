@@ -34,7 +34,14 @@ define KernelPackage/$(PKG_NAME)/Description
 endef
 
 define KernelPackage/$(PKG_NAME)/install
-  $(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/bin
+ifeq ($(CONFIG_TARGET_sdx85),y)
+	$(INSTALL_DIR) $(1)/lib/modules/$(UNAME_VERSION)
+	$(SIGN_KEY) $(PKG_BUILD_DIR)/debug_uio.ko
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/debug_uio.ko $(1)/lib/modules/$(UNAME_VERSION)
+	$(INSTALL_DIR) $(TOPDIR)/bin/targets/$(TARGET_VARIANT)/modules
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/debug_uio.ko $(TOPDIR)/bin/targets/$(TARGET_VARIANT)/modules
+endif
 endef
 
 define Build/Compile
